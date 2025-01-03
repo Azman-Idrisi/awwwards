@@ -1,3 +1,4 @@
+import Features from './Features'
 import Navbar from './Navbar'
 import About from './screens/About'
 import Hero from './screens/Hero'
@@ -7,6 +8,7 @@ const App = () => {
     <Navbar />
      <Hero />
     <About />
+    <Features />
     </main>
   )
 }
