@@ -1,14 +1,36 @@
-import React from "react";
+import React, { useRef } from "react";
 import BentoCard from "./components/BentoCard";
 import { TiLocation } from "react-icons/ti";
 import { useState } from "react";
 
 const BentoTilt = ({children , className = ''})=>{
-  
+
   const [transfomrStyle , setTransformStyle] = useState('')
   
+  const itemRef = useRef(null)
+  
+  const handleMouseMove = (event) => {
+ if(!itemRef.current) return;
+
+const {left , top , width , height} = itemRef.current.getBoundingClientRect();
+
+const relativeX = (event.clientX -left) / width;
+const relativeY = (event.clientY - top) / height;
+
+const tiltX = (relativeY - 0.5)*20;
+const tiltY = (relativeX - 0.5)* -20;
+
+const newTransform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(0.95,1,1)`
+
+ setTransformStyle(newTransform)
+  }
+
+  const handleMouseLeave = () => {
+    setTransformStyle('')
+  }
+
     return(
-        <div className={className}>
+        <div className={className} ref={itemRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave } style={{transform : transfomrStyle}}>
             {children}
         </div>
     )
